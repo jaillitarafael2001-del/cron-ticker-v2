@@ -21,12 +21,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Show variables
+      - name: Show Local variables
         run: |
           echo "App: ${{env.APP_NAME}}, Node: ${{env.NODE_VERSION}}"
+
+      - name: Show Git variables
+        run: |
+          echo "App: ${{env.APP_VERSION}}"  
 
       - name: build
         run: npm run build
         env:
-          APP_VERSION: "3.0.0"
+          APP_VERSION: ${{env.APP_VERSION}}
   
