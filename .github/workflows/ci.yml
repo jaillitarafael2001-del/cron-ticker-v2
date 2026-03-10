@@ -12,29 +12,37 @@ env:
   APP_NAME: cron-ticker-v2
 
 jobs:
-  build: 
+  lint: 
+    name: lint
     runs-on: ubuntu-latest
-
-    env:
-      BUILD_DIR: dist
-    
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          nose-version: ${{env.NODE_VERSION}}
+      - run: npm ci
+      - run: npm run lint
 
-      - name: Show Local variables
-        run: |
-          echo "App: ${{env.APP_NAME}}, Node: ${{env.NODE_VERSION}}"
 
-      - name: Show Git variables
-        run: |
-          echo "App: ${{vars.APP_VERSION}}"
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          nose-version: ${{env.NODE_VERSION}}
+      - run: npm ci
+      - name: Run tests with coverage
+        run: npm run test:coverage
 
-      - name: Show Git secrets
-        run: |
-          echo "Secret: ${{secrets.API_KEY}}"      
-
-      - name: build
-        run: npm run build
-        env:
-          APP_VERSION: ${{vars.APP_VERSION}}
-  
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run build
