@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           nose-version: ${{env.NODE_VERSION}}
+          cache: 'npm'
       - run: npm ci
       - run: npm run lint
 
@@ -33,6 +34,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           nose-version: ${{env.NODE_VERSION}}
+          cache: 'npm'
       - run: npm ci
       - name: Run tests with coverage
         run: npm run test:coverage
@@ -44,5 +46,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+        with:
+          nose-version: ${{env.NODE_VERSION}}
+          cache: 'npm'
       - run: npm ci
       - run: npm run build
