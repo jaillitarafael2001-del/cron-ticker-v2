@@ -27,10 +27,10 @@ jobs:
 
       - name: Show Git variables
         run: |
-          echo "App: ${{env.APP_VERSION}}"  
+          echo "App: ${{vars.APP_VERSION}}"  
 
       - name: build
         run: npm run build
         env:
-          APP_VERSION: ${{env.APP_VERSION}}
+          APP_VERSION: ${{vars.APP_VERSION}}
   
